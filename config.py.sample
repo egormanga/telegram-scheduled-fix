@@ -1,0 +1,8 @@
+# telegram-scheduled-fix config
+
+PEERS = (
+	-1001234567890,  # My channel
+	-212345678,  # Test chat
+)
+
+API_ID, API_HASH = 1234567, "1234567890abcdefghijklmnopqrstuv"  # See https://core.telegram.org/api/obtaining_api_id

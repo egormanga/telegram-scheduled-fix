@@ -1,0 +1,8 @@
+**.db
+**.log
+**.old
+**.bak
+**.pid
+**__pycache__
+**config*
+!**config*.sample
