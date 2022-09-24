@@ -4,7 +4,7 @@
 import time, socket, asyncio, os.path, datetime, operator, telethon
 from config import PEERS, API_ID, API_HASH
 
-client = telethon.TelegramClient('telegram-scheduled-fix', API_ID, API_HASH, device_model=socket.gethostname(), system_version=os.path.splitext(os.path.basename(__file__))[0])
+client = telethon.TelegramClient('telegram-scheduled-fix', API_ID, API_HASH, device_model=socket.gethostname(), app_version=os.path.splitext(os.path.basename(__file__))[0].join('()'))
 
 async def main():
 	now = datetime.datetime.now(tz=datetime.timezone.utc)
@@ -23,6 +23,7 @@ async def main():
 				print(f"[{time.strftime('%x %X')}] Holding {len(tohold)} message{'s'*(len(tosend)>1)} to {peer}: {', '.join(str(m.id) for m in tohold)}")
 				await asyncio.gather(*(client.edit_message(m, schedule=m.date+datetime.timedelta(days=+1)) for m in tohold))
 
-if (__name__ == '__main__'): exit(asyncio.get_event_loop().run_until_complete(main()))
+if (__name__ == '__main__'): exit(asyncio.run(main()))
 
-# by Sdore, 2021
+# by Sdore, 2021-22
+#   www.sdore.me
