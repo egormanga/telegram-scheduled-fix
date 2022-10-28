@@ -15,11 +15,11 @@ async def main():
 		for peer in PEERS:
 			messages = (await client(telethon.functions.messages.GetScheduledHistoryRequest(peer, 0))).messages
 
-			if (tosend := sorted(m.id for m in messages if past <= m.date <= now and '#draft' not in m.message)):
+			if (tosend := sorted(m.id for m in messages if m.date is not None and past <= m.date <= now and '#draft' not in m.message)):
 				print(f"[{time.strftime('%x %X')}] Sending {len(tosend)} message{'s'*(len(tosend)>1)} to {peer}: {', '.join(map(str, tosend))}")
 				await client(telethon.functions.messages.SendScheduledMessagesRequest(peer, tosend))
 
-			if (tohold := sorted((m for m in messages if now <= m.date <= soon and '#draft' in m.message), key=operator.attrgetter('id'))):
+			if (tohold := sorted((m for m in messages if m.date is not None and now <= m.date <= soon and '#draft' in m.message), key=operator.attrgetter('id'))):
 				print(f"[{time.strftime('%x %X')}] Holding {len(tohold)} message{'s'*(len(tosend)>1)} to {peer}: {', '.join(str(m.id) for m in tohold)}")
 				await asyncio.gather(*(client.edit_message(m, schedule=m.date+datetime.timedelta(days=+1)) for m in tohold))
 
